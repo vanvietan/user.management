@@ -1,9 +1,6 @@
 package s3.vietan.user.management.entity;
 
 
-
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +17,7 @@ import lombok.ToString;
 @Builder
 public class User {
 	
-	private UUID id;
+	private int id;
 	
 	private String name;
 	
