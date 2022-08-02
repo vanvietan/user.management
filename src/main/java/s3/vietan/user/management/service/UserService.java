@@ -3,7 +3,6 @@ package s3.vietan.user.management.service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class UserService {
 		return userDTOs;
 	}
 
-	public UserDTO getUser(UUID id) {
+	public UserDTO getUser(int id) {
 		
 		Optional<User> userOpt = repository.findById(id);
 		
@@ -58,28 +57,28 @@ public class UserService {
 		User user = new User();
 		BeanUtils.copyProperties(userDTO, user);
 		
-		//check userName duplicated
-		Optional<User> userOpt = repository.findByUsername(userDTO.getUsername());
-		if(userOpt.isPresent()) {
-			throw new NotFoundException("User already created");
-		}
-		
 		//check password & retype password 
 		if(!user.getPassword().equals(user.getRetypePassword())) {
 			throw new NotFoundException("Password mismatch!!!");
 		}
 		
-		User createdUser = repository.save(user);
+		//check userName duplicated
+		Optional<User> userOpt = repository.findByUsername(user.getUsername());
+		if(userOpt.isPresent()) {
+			throw new NotFoundException("User already created");
+		}
+		
+		repository.save(user);
 		user.setPassword(null);
 		user.setRetypePassword(null);
 		
 		UserDTO dto = new UserDTO();
-		BeanUtils.copyProperties(createdUser, dto);
+		BeanUtils.copyProperties(user, dto);
 		
 		return dto;
 	}
 
-	public UserDTO updateUser(UUID id, UpdatedUserDTO updatedUserDTO) {
+	public boolean updateUser(int id, UpdatedUserDTO updatedUserDTO) {
 		/*
 		 * check db for existed id
 		 */
@@ -108,17 +107,13 @@ public class UserService {
 		}
 		
 		/*
-		 * save user update to db and return updated user as dto
+		 * update user update to db
 		 */
-		User updatedUser = repository.save(user);
 		
-		UserDTO dto = new UserDTO();
-		BeanUtils.copyProperties(updatedUser, dto);
-		
-		return dto;
+		return repository.update(user) == 1 ? true : false;
 	}
 
-	public void deleteUser(UUID id) {
+	public boolean deleteUser(int id) {
 		/*
 		 * check db for existed id
 		 */
@@ -127,7 +122,9 @@ public class UserService {
 			throw new NotFoundException("User id is not existed!");
 		}
 		
-		repository.delete(userOpt.get());
+		
+		
+		return repository.delete(userOpt.get()) == 1 ? true : false;
 	}
 
 }

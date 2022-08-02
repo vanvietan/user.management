@@ -1,7 +1,6 @@
 package s3.vietan.user.management.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -30,6 +29,10 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
+	/*
+	 * CRUD API
+	 */
+	
 	@GetMapping(value="/user")
 	public ResponseEntity<Object> findAllUser(){
 		List<UserDTO> users = service.findAll();
@@ -38,7 +41,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/user/{userId}")
-	public ResponseEntity<Object> getUser(@PathVariable("userId") UUID id){
+	public ResponseEntity<Object> getUser(@PathVariable("userId") int id){
 		UserDTO getUser = service.getUser(id);
 		
 		return ResponseHandler.getResponse(getUser, HttpStatus.OK);
@@ -58,15 +61,15 @@ public class UserController {
 	
 	@PutMapping(value="/user/{userId}")
 	public ResponseEntity<Object> updateUser(
-			@PathVariable("userId") UUID id, @Valid @RequestBody UpdatedUserDTO updatedUserDTO, BindingResult bindingResult){
+			@PathVariable("userId") int id, @Valid @RequestBody UpdatedUserDTO updatedUserDTO, BindingResult bindingResult){
 		
-		UserDTO updatedUser = service.updateUser(id, updatedUserDTO);
+		service.updateUser(id, updatedUserDTO);
 		
-		return ResponseHandler.getResponse(updatedUser, HttpStatus.OK);
+		return ResponseHandler.getResponse("Updated User Successfully", HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value="/user/{userId}")
-	public ResponseEntity<Object> deleteUser(@PathVariable("userId") UUID id){
+	public ResponseEntity<Object> deleteUser(@PathVariable("userId") int id){
 		
 		service.deleteUser(id);
 		

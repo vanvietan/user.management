@@ -1,12 +1,13 @@
 package s3.vietan.user.management.entity;
 
-import java.util.UUID;
+
 
 import javax.validation.constraints.NotBlank;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,7 @@ import lombok.ToString;
 @Builder
 public class UserDTO {
 	
-	private UUID id;
+	private int id;
 	
 	private String name;
 	
@@ -39,7 +40,7 @@ public class UserDTO {
 	
 	private String address;
 	
-	@NotBlank
+
 	private int age;
 	
 }
