@@ -51,6 +51,7 @@ public class UserRepository {
 
 	public Optional<User> findById(int id) {
 		Connection connection = null;
+		boolean hasUser = false;
 		User user = new User();
 		try {
 			connection = PostgreConnection.getConnection();
@@ -70,6 +71,8 @@ public class UserRepository {
 				user.setAddress(rs.getString("address"));
 				user.setAge(rs.getInt("age"));
 				
+				hasUser = true;
+				
 			}
 			
 		} catch (SQLException e) {
@@ -77,7 +80,11 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 		
-		return Optional.of(user);
+		if(hasUser) {
+			return Optional.ofNullable(user);
+		}else {
+			return Optional.ofNullable(null);
+		}
 	}
 
 	public Optional<User> findByUsername(String username) {

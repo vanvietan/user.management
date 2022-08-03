@@ -51,7 +51,7 @@ public class UserController {
 	public ResponseEntity<Object> createUser(
 			@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
 		if(bindingResult.hasErrors()) {
-			return ResponseHandler.geErrorResponse(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+			return ResponseHandler.getErrorResponse(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 		
 		UserDTO createdUser = service.createUser(userDTO);

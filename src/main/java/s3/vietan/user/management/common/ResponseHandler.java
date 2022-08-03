@@ -39,7 +39,7 @@ public class ResponseHandler {
 		return new ResponseEntity<Object>(map, status);
 	}
 	
-	public static ResponseEntity<Object> geErrorResponse(Object obj, HttpStatus status){
+	public static ResponseEntity<Object> getErrorResponse(Object obj, HttpStatus status){
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(obj instanceof BindingResult) {
